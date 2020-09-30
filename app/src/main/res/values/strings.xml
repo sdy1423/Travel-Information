@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TravelInfro</string>
+    <string name="travel_search">관광정보 검색:</string>
+    <string name="travel_location">지역:</string>
+    <string name="travel_type">타입:</string>
+    <string name="travel_btn_search">검색</string>
 </resources>
