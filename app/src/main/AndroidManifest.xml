@@ -15,17 +15,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MapActivity"></activity>
-        <activity android:name=".OutlineActivity" />
-        <activity android:name=".TravelActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".NoticeBoardActivity"></activity>
+        <activity android:name=".PostDetailActivity" />
+        <activity android:name=".NewPostActivity" />
+        <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MapActivity" />
+        <activity android:name=".OutlineActivity" />
+        <activity android:name=".TravelActivity" />
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "768387748944",
+    "firebase_url": "https://travelinfo-ba48f.firebaseio.com",
+    "project_id": "travelinfo-ba48f",
+    "storage_bucket": "travelinfo-ba48f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768387748944:android:3c8b69f3dc39294d112d55",
+        "android_client_info": {
+          "package_name": "com.example.travelinfro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768387748944-5qqmo8s4u7l8hu0gkcn0fg3gcd360kf8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.travelinfro",
+            "certificate_hash": "bc5575aa6a37119e17ec96818798e5ed8d44d621"
+          }
+        },
+        {
+          "client_id": "768387748944-otqoottck0ldd02m97tkvgabo8ma27m2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0rynvnnNecjPqKNjEbxS2NqcCUwV5wQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "768387748944-otqoottck0ldd02m97tkvgabo8ma27m2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

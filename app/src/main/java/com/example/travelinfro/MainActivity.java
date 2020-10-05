@@ -26,4 +26,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.main_btn_board1:
+                Intent intent = new Intent(getApplicationContext(),NoticeBoardActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_btn_board2:
+
+                break;
+            case R.id.main_btn_board3:
+
+                break;
+            case R.id.main_btn_board4:
+
+                break;
+            case R.id.main_btn_board5:
+
+                break;
+            default:
+                break;
+        }
+    }
 }
