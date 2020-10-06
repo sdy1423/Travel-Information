@@ -3,56 +3,86 @@ package com.example.travelinfro;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class NoticeBoardActivity extends FragmentActivity {
+    private static final String TAG = "NoticeBoardActivity";
+
     TabLayout tabs;
+    ViewPager viewPager;
     RecentPostsFragment recentPostsFragment;
     MyPostsFragment myPostsFragment;
     MyTopPostsFragment myTopPostsFragment;
+
+    int boardNum = 0;
+    String board = "board";
+    FloatingActionButton mBtnNewPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_board);
 
-        recentPostsFragment = new RecentPostsFragment();
-        myPostsFragment = new MyPostsFragment();
-        myTopPostsFragment = new MyTopPostsFragment();
+        Intent intent = new Intent(this.getIntent());
+        boardNum = intent.getIntExtra("boardNum",0);
+        board +=String.valueOf(boardNum);
+        Log.e(TAG,"boardNum: "+boardNum);
+        Log.e(TAG,"board: "+board );
 
-        getSupportFragmentManager().beginTransaction().add(R.id.board_frame_layout,recentPostsFragment).commit();
         tabs = findViewById(R.id.board_tab_layout);
-        tabs.addTab(tabs.newTab().setText("최신글"));
-        tabs.addTab(tabs.newTab().setText("내가 쓴글"));
-        tabs.addTab(tabs.newTab().setText("내가 쓴 인기글"));
+        viewPager = findViewById(R.id.board_view_pager);
 
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+        FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            private final Fragment[] mFragments = new Fragment[]{
+                    new RecentPostsFragment(board),
+                    new MyPostsFragment(board),
+                    new MyTopPostsFragment(board),
+            };
+            private final String[] mFragmentNames = new String[]{
+                    getString(R.string.heading_recent),
+                    getString(R.string.heading_my_posts),
+                    getString(R.string.heading_my_top_posts)
+            };
+
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                Fragment selected = null;
-                if(position==0){
-                    selected = recentPostsFragment;
-                }else if(position==1){
-                    selected = myPostsFragment;
-                }else if(position==2){
-                    selected = myTopPostsFragment;
-                }
-                assert selected != null;
-                getSupportFragmentManager().beginTransaction().replace(R.id.board_frame_layout,selected).commit();
+            public Fragment getItem(int position) {
+                return mFragments[position];
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
+            public int getCount() {
+                return mFragments.length;
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
+            }
+        };
+        // Set up the ViewPager with the sections adapter.
 
+        viewPager.setAdapter(mPagerAdapter);
+        tabs.setupWithViewPager(viewPager);
+
+        mBtnNewPost = findViewById(R.id.board_floating_action_btn);
+        mBtnNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),NewPostActivity.class);
+                intent.putExtra("boardNum",boardNum);
+                Log.e(TAG,"send board number"+boardNum);
+                startActivity(intent);
             }
         });
 

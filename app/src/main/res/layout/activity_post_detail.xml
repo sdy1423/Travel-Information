@@ -36,7 +36,7 @@
         android:weightSum="1.0">
 
         <EditText
-            android:id="@+id/fieldCommentText"
+            android:id="@+id/post_detail_edt_comment"
             android:layout_width="0dp"
             android:layout_weight="0.8"
             android:layout_height="wrap_content"
@@ -44,17 +44,18 @@
             android:hint="Write a comment..."/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonPostComment"
+            android:id="@+id/post_detail_btn_comment_post"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_weight="0.2"
+            android:onClick="onClick"
             android:layout_height="wrap_content"
             android:text="Post"/>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerPostComments"
+        android:id="@+id/post_detail_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/commentForm"

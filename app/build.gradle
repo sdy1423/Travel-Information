@@ -22,6 +22,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 dependencies {
@@ -45,6 +49,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.5.0'
     implementation 'com.firebaseui:firebase-ui-database:6.3.0'
     implementation 'androidx.arch.core:core-runtime:2.1.0'
+    implementation "androidx.cardview:cardview:1.0.0"
 
 
 }

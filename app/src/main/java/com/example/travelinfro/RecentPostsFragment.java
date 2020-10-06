@@ -8,14 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 
-public class RecentPostsFragment extends Fragment {
 
+public class RecentPostsFragment extends PostListFragment {
+    String board = null;
+
+    public RecentPostsFragment(String board) {
+        this.board=board;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_recent_posts, container, false);
+    public Query getQuery(DatabaseReference databaseReference) {
+        Query recentPostsQuery = databaseReference.child(board).child("posts")
+                .limitToFirst(100);
+        return recentPostsQuery;
     }
 }

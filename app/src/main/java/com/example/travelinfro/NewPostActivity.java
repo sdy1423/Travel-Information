@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DataSnapshot;
 public class NewPostActivity extends AppCompatActivity {
 
     private static final String TAG = "NewPostActivity";
+    private static final String REQUIRED = "문자를 입력하세요";
+
 
     EditText mEdtTitle,mEdtBody;
     FloatingActionButton mFabSubmitPost;
@@ -38,6 +41,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this.getIntent());
         boardNum = intent.getIntExtra("boardNum",0);
+        Log.e(TAG,"get board num"+boardNum);
         board +=String.valueOf(boardNum);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -58,6 +62,21 @@ public class NewPostActivity extends AppCompatActivity {
     private void submitPost(){
         final String title = mEdtTitle.getText().toString();
         final String body = mEdtBody.getText().toString();
+
+        if(TextUtils.isEmpty(title)){
+            mEdtTitle.setError(REQUIRED);
+            return;
+        }
+
+        if(TextUtils.isEmpty(body)){
+            mEdtBody.setError(REQUIRED);
+            return;
+        }
+        Log.e(TAG,"submitPost title: "+title);
+        Log.e(TAG,"submitPost body: "+body);
+
+        setEditingEnabled(false);
+        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
 
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();;
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(

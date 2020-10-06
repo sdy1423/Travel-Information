@@ -28,25 +28,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
+        Intent intent = new Intent(getApplicationContext(),NoticeBoardActivity.class);
         switch (view.getId()){
             case R.id.main_btn_board1:
-                Intent intent = new Intent(getApplicationContext(),NoticeBoardActivity.class);
-                startActivity(intent);
+                intent.putExtra("boardNum",1);
                 break;
             case R.id.main_btn_board2:
-
+                intent.putExtra("boardNum",2);
                 break;
             case R.id.main_btn_board3:
-
+                intent.putExtra("boardNum",3);
                 break;
             case R.id.main_btn_board4:
-
+                intent.putExtra("boardNum",4);
                 break;
             case R.id.main_btn_board5:
-
+                intent.putExtra("boardNum",5);
                 break;
             default:
                 break;
         }
+        startActivity(intent);
     }
 }

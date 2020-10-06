@@ -8,18 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 
-public class MyPostsFragment extends Fragment {
 
-    public MyPostsFragment() {
-        // Required empty public constructor
+public class MyPostsFragment extends PostListFragment {
+
+    String board = null;
+    public MyPostsFragment(String board) {
+        this.board=board;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_posts, container, false);
+    public Query getQuery(DatabaseReference databaseReference) {
+        return databaseReference.child(board).child("user-posts").child(getUid());
     }
 }
