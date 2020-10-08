@@ -2,11 +2,16 @@ package com.example.travelinfro;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 public abstract class PostListFragment extends Fragment {
     private static final String TAG = "PostListFragment";
@@ -30,39 +37,38 @@ public abstract class PostListFragment extends Fragment {
     private FirebaseRecyclerAdapter<Post,PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    FirebaseRecyclerOptions options;
+    String board;
+    Query postsQuery;
 
-    public PostListFragment() {}
+    public PostListFragment(String board) {
+        this.board = board;
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
-
-        // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
-
         mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
-
         return rootView;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Set up Layout Manager, reverse layout
         mManager = new LinearLayoutManager(getActivity());
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
-        // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
+        postsQuery = getQuery(mDatabase);
 
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
+        options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(postsQuery, Post.class)
                 .build();
 
@@ -78,34 +84,35 @@ public abstract class PostListFragment extends Fragment {
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
                 final DatabaseReference postRef = getRef(position);
 
-                // Set click listener for the whole post view
                 final String postKey = postRef.getKey();
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Launch PostDetailActivity
+                        //PostDetailActivity실행 + postkey전달
                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                         intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+                        intent.putExtra("board",board);
+                        Log.e(TAG,"send board: "+board);
+                        Log.e(TAG,"send postkey: "+postKey);
+
                         startActivity(intent);
                     }
                 });
 
-                // Determine if the current user has liked this post and set UI accordingly
+                //현재 유저가 해당 포스트를 좋아요를 눌렀는지 여부에 따라 아이콘을 다르게 구성
                 if (model.stars.containsKey(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                     viewHolder.starView.setImageResource(R.drawable.ic_star_black_24dp);
                 } else {
                     viewHolder.starView.setImageResource(R.drawable.ic_star_purple_24dp);
                 }
 
-                // Bind Post to ViewHolder, setting OnClickListener for the star button
+                //Post와 뷰홀더를 엮는다. 별 버튼에 클릭 리스너 달아준다.
                 viewHolder.bindToPost(model, new View.OnClickListener() {
                     @Override
                     public void onClick(View starView) {
-                        // Need to write to both places the post is stored
-                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
-                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.getUid()).child(postRef.getKey());
+                        DatabaseReference globalPostRef = mDatabase.child(board).child("posts").child(postRef.getKey());
+                        DatabaseReference userPostRef = mDatabase.child(board).child("user-posts").child(model.getUid()).child(postRef.getKey());
 
-                        // Run two transactions
                         onStarClicked(globalPostRef);
                         onStarClicked(userPostRef);
                     }
@@ -115,7 +122,7 @@ public abstract class PostListFragment extends Fragment {
         mRecycler.setAdapter(mAdapter);
     }
 
-    // [START post_stars_transaction]
+    //별 클릭 리스너
     private void onStarClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -126,16 +133,12 @@ public abstract class PostListFragment extends Fragment {
                 }
 
                 if (p.stars.containsKey(getUid())) {
-                    // Unstar the post and remove self from stars
                     p.starCount = p.starCount - 1;
                     p.stars.remove(getUid());
                 } else {
-                    // Star the post and add self to stars
                     p.starCount = p.starCount + 1;
                     p.stars.put(getUid(), true);
                 }
-
-                // Set value and report transaction success
                 mutableData.setValue(p);
                 return Transaction.success(mutableData);
             }
@@ -143,12 +146,10 @@ public abstract class PostListFragment extends Fragment {
             @Override
             public void onComplete(DatabaseError databaseError, boolean committed,
                                    DataSnapshot currentData) {
-                // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
         });
     }
-    // [END post_stars_transaction]
 
 
     @Override

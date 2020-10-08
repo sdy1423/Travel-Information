@@ -14,10 +14,9 @@ import com.google.firebase.database.Query;
 
 public class MyTopPostsFragment extends PostListFragment {
 
-    String board = null;
 
     public MyTopPostsFragment(String board) {
-        this.board = board;
+        super(board);
     }
 
     @Override
@@ -26,4 +25,7 @@ public class MyTopPostsFragment extends PostListFragment {
         Query myTopPostsQuery = databaseReference.child(board).child("user-posts").child(myUserId)
                 .orderByChild("starCount");
         return myTopPostsQuery;    }
+
+
+
 }

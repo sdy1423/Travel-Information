@@ -28,7 +28,6 @@ public class NewPostActivity extends AppCompatActivity {
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "문자를 입력하세요";
 
-
     EditText mEdtTitle,mEdtBody;
     FloatingActionButton mFabSubmitPost;
     private DatabaseReference mDatabase;
@@ -76,7 +75,7 @@ public class NewPostActivity extends AppCompatActivity {
         Log.e(TAG,"submitPost body: "+body);
 
         setEditingEnabled(false);
-        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "포스팅 중입니다.", Toast.LENGTH_SHORT).show();
 
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();;
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
@@ -85,29 +84,24 @@ public class NewPostActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
                         if (user == null) {
-                            // User is null, error out
+                            //유저 조회 실패
                             Log.e(TAG, "User " + userId + " is unexpectedly null");
                             Toast.makeText(NewPostActivity.this,
-                                    "Error: could not fetch user.",
+                                    "Error: 존재하지 않는 유저입니다.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            // Write new post
+                            // 유저 조회 성공, 글쓰기 시작
                             writeNewPost(userId, user.username, title, body);
                         }
-                        // Finish this Activity, back to the stream
                         setEditingEnabled(true);
                         finish();
-                        // [END_EXCLUDE]
-
 
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.w(TAG, "getUser:onCancelled", error.toException());
-                        // [START_EXCLUDE]
                         setEditingEnabled(true);
-                        // [END_EXCLUDE]
                     }
                 }
         );
@@ -124,6 +118,7 @@ public class NewPostActivity extends AppCompatActivity {
     }
 
     private void writeNewPost(String userId,String userName,String title,String body){
+
         String key = mDatabase.child(board).child("posts").push().getKey();
         Post post = new Post(userId,userName,title,body);
         Map<String ,Object> postValues = post.toMap();

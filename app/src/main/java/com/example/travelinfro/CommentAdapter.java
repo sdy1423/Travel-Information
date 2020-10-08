@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
-    private static final String TAG = "PostDetailActivity";
+    private static final String TAG = "CommentAdapter";
     private Context mContext;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
@@ -32,93 +32,71 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
         mContext = context;
         mDatabaseReference = ref;
 
-        // Create child event listener
-        // [START child_event_listener_recycler]
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
 
-                // A new comment has been added, add it to the displayed list
+                //새로운 댓글 추가됨. 리스트에 추가한다.
                 Comment comment = dataSnapshot.getValue(Comment.class);
 
-                // [START_EXCLUDE]
-                // Update RecyclerView
+                //리사이클러뷰 갱신
                 mCommentIds.add(dataSnapshot.getKey());
                 mComments.add(comment);
                 notifyItemInserted(mComments.size() - 1);
-                // [END_EXCLUDE]
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
 
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so displayed the changed comment.
                 Comment newComment = dataSnapshot.getValue(Comment.class);
                 String commentKey = dataSnapshot.getKey();
 
-                // [START_EXCLUDE]
                 int commentIndex = mCommentIds.indexOf(commentKey);
                 if (commentIndex > -1) {
-                    // Replace with the new data
                     mComments.set(commentIndex, newComment);
 
-                    // Update the RecyclerView
                     notifyItemChanged(commentIndex);
                 } else {
                     Log.w(TAG, "onChildChanged:unknown_child:" + commentKey);
                 }
-                // [END_EXCLUDE]
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
 
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so remove it.
                 String commentKey = dataSnapshot.getKey();
 
-                // [START_EXCLUDE]
                 int commentIndex = mCommentIds.indexOf(commentKey);
                 if (commentIndex > -1) {
-                    // Remove data from the list
                     mCommentIds.remove(commentIndex);
                     mComments.remove(commentIndex);
 
-                    // Update the RecyclerView
                     notifyItemRemoved(commentIndex);
                 } else {
                     Log.w(TAG, "onChildRemoved:unknown_child:" + commentKey);
                 }
-                // [END_EXCLUDE]
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
 
-                // A comment has changed position, use the key to determine if we are
-                // displaying this comment and if so move it.
                 Comment movedComment = dataSnapshot.getValue(Comment.class);
                 String commentKey = dataSnapshot.getKey();
 
-                // ...
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "postComments:onCancelled", databaseError.toException());
-                Toast.makeText(mContext, "Failed to load comments.",
+                Toast.makeText(mContext, "댓글 작성에 실패했습니다.",
                         Toast.LENGTH_SHORT).show();
             }
         };
         ref.addChildEventListener(childEventListener);
-        // [END child_event_listener_recycler]
-
-        // Store reference to listener so it can be removed on app stop
         mChildEventListener = childEventListener;
     }
 

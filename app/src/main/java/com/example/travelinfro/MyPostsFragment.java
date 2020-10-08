@@ -14,13 +14,13 @@ import com.google.firebase.database.Query;
 
 public class MyPostsFragment extends PostListFragment {
 
-    String board = null;
     public MyPostsFragment(String board) {
-        this.board=board;
+        super(board);
     }
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
         return databaseReference.child(board).child("user-posts").child(getUid());
     }
+
 }

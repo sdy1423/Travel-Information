@@ -14,4 +14,8 @@
     <string name="heading_recent">최신글</string>
     <string name="heading_my_posts">내가 쓴글</string>
     <string name="heading_my_top_posts">내가 쓴 인기글</string>
+    <string name="new_post_title">제목</string>
+    <string name="new_post_content">내용</string>
+    <string name="post_detail_post">확인</string>
+    <string name="post_detail_write_comments">댓글 작성</string>
 </resources>

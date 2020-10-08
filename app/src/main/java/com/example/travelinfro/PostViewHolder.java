@@ -1,5 +1,6 @@
 package com.example.travelinfro;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         bodyView.setText(post.getBody());
         starView.setOnClickListener(starClickListener);
 
+        Log.e("postviewholder","post"+post.getTitle());
     }
 
 }

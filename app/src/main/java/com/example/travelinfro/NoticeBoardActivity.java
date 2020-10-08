@@ -19,9 +19,6 @@ public class NoticeBoardActivity extends FragmentActivity {
 
     TabLayout tabs;
     ViewPager viewPager;
-    RecentPostsFragment recentPostsFragment;
-    MyPostsFragment myPostsFragment;
-    MyTopPostsFragment myTopPostsFragment;
 
     int boardNum = 0;
     String board = "board";
@@ -40,7 +37,6 @@ public class NoticeBoardActivity extends FragmentActivity {
 
         tabs = findViewById(R.id.board_tab_layout);
         viewPager = findViewById(R.id.board_view_pager);
-
 
         FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -70,7 +66,6 @@ public class NoticeBoardActivity extends FragmentActivity {
                 return mFragmentNames[position];
             }
         };
-        // Set up the ViewPager with the sections adapter.
 
         viewPager.setAdapter(mPagerAdapter);
         tabs.setupWithViewPager(viewPager);

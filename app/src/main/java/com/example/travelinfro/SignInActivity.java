@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
             Toast.makeText(SignInActivity.this,"이메일 형식에 맞지 않습니다.",Toast.LENGTH_SHORT).show();
             return;
         }
-        if(isValidPasswd(pwd)){
+        if(!isValidPasswd(pwd)){
             Log.e("logIn","pwd is not valid");
             Toast.makeText(SignInActivity.this,"비밀번호 형식에 맞지 않습니다(6자리 이상, 한글 미포함.",Toast.LENGTH_SHORT).show();
             return;
@@ -120,9 +120,9 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
-        if(isValidPasswd(pwd)){
+        if(!isValidPasswd(pwd)){
             Log.e("createAccount","pwd is not valid");
-            Toast.makeText(SignInActivity.this,"비밀번호 형식에 맞지 않습니다(6자리 이상, 한글 미포함.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this,"비밀번호 형식에 맞지 않습니다(6~16자리, 한글 미포함.",Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -161,9 +161,11 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private boolean isValidPasswd(String target) {
-        //비밀번호 유효성 검사 (6자리 이상, 한글 미포함)
-        Pattern p = Pattern.compile("(^.*(?=.{6,100})(?=.*[0-9])(?=.*[a-zA-Z]).*$)");
+        //비밀번호 유효성 검사 (6자리~16자리, 한글 미포함)
+
+        Pattern p = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{6,16}$");
         Matcher m = p.matcher(target);
+
         if (m.find() && !target.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")){
             return true;
         }else{

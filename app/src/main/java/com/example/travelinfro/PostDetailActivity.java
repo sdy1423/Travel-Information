@@ -35,7 +35,6 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
     private String mPostKey;
     private CommentAdapter mAdapter;
 
-    int boardNum = 0;
     String board = "board";
 
     RecyclerView mRecycler;
@@ -47,14 +46,14 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_post_detail);
 
         Intent intent = new Intent(this.getIntent());
-        boardNum = intent.getIntExtra("boardNum",0);
-        board +=String.valueOf(boardNum);
-
-        // Get post key from intent
+        board = intent.getStringExtra("board");
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
         if (mPostKey == null) {
             throw new IllegalArgumentException("Must pass EXTRA_POST_KEY");
         }
+        Log.e(TAG,"board: "+board);
+        Log.e(TAG,"postkey: "+mPostKey);
+
 
         // Initialize Database
         mPostReference = FirebaseDatabase.getInstance().getReference()
@@ -70,36 +69,32 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
     public void onStart() {
         super.onStart();
 
-        // Add value event listener to the post
-        // [START post_value_event_listener]
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
-                // [START_EXCLUDE]
+                Log.e(TAG,"post.getAuthor "+post.getAuthor());
+
                 TextView postAuthor,postTitle,postBody;
                 postAuthor = findViewById(R.id.postAuthor);
                 postTitle = findViewById(R.id.postTitle);
                 postBody = findViewById(R.id.postBody);
-                postAuthor.setText(Objects.requireNonNull(post).getAuthor());
-                postTitle.setText(post.getTitle());
-                postBody.setText(post.getBody());
-                // [END_EXCLUDE]
+
+                postAuthor.setText(Objects.requireNonNull(post).getAuthor()); //글쓴이 (이메일에서 추출함)
+                postTitle.setText(post.getTitle()); //제목
+                postBody.setText(post.getBody()); //내용
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
+                // 실패 했을 때
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // [START_EXCLUDE]
-                Toast.makeText(PostDetailActivity.this, "Failed to load post.",
+                Toast.makeText(PostDetailActivity.this, "게시물을 로드하는 데 실패했습니다.",
                         Toast.LENGTH_SHORT).show();
-                // [END_EXCLUDE]
             }
         };
         mPostReference.addValueEventListener(postListener);
-        // [END post_value_event_listener]
 
         // Keep copy of post listener so we can remove it when app stops
         mPostListener = postListener;
@@ -119,23 +114,21 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
 
     private void postComment() {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();;
+
         FirebaseDatabase.getInstance().getReference().child("users").child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user information
+                        // 유저 정보를 가져 온다.
                         User user = dataSnapshot.getValue(User.class);
                         String authorName = user.username;
 
-                        // Create new comment object
                         EditText edtComment = findViewById(R.id.post_detail_edt_comment);
                         String commentText = edtComment.getText().toString();
                         Comment comment = new Comment(uid, authorName, commentText);
 
-                        // Push the comment, it will appear in the list
                         mCommentsReference.push().setValue(comment);
 
-                        // Clear the field
                         edtComment.setText(null);
                     }
 
@@ -149,11 +142,9 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onStop() {
         super.onStop();
-        // Remove post value event listener
         if (mPostListener != null) {
             mPostReference.removeEventListener(mPostListener);
         }
-        // Clean up comments listener
         mAdapter.cleanupListener();
     }
 
