@@ -42,11 +42,18 @@ public class TravelActivity extends AppCompatActivity {
 
     RecyclerView mRecycler;
 
+    ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(0,
+            R.array.city1,R.array.city2,R.array.city3,R.array.city4,
+            R.array.city5,R.array.city6,R.array.city7,R.array.city8,
+            R.array.city9,R.array.city10,R.array.city11,R.array.city12,
+            R.array.city13,R.array.city14,R.array.city15,R.array.city16,
+            R.array.city17,R.array.city18
+    ));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
-        InitializeCity();
         mRecycler = findViewById(R.id.travel_recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,13 +64,12 @@ public class TravelActivity extends AppCompatActivity {
         mSpTravelType = findViewById(R.id.travel_sp_type);
 
         //시군구 스피너 세팅(디폴트로 서울)
-        mAdapterCity = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,CityList[0]);
+        mAdapterCity = ArrayAdapter.createFromResource(this,R.array.city1,android.R.layout.simple_spinner_item);
         mSpTravelCity.setAdapter(mAdapterCity);
         mSpTravelCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sigunguCode = position+1;
-
+                sigunguCode=position+1;
             }
 
             @Override
@@ -81,8 +87,12 @@ public class TravelActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 areaCode = position+1;
                 //지역선택에 맞춰서 시군구 스피너 item 변경
-                mAdapterCity = new ArrayAdapter(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,CityList[position]);
-                mSpTravelCity.setAdapter(mAdapterCity);
+                try {
+                    mAdapterCity = ArrayAdapter.createFromResource(getApplicationContext(), arrayList.get(areaCode),android.R.layout.simple_spinner_item);
+                    mSpTravelCity.setAdapter(mAdapterCity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -143,21 +153,14 @@ public class TravelActivity extends AppCompatActivity {
 
                 //TODO 검색 API받아와서 리사이클러뷰에 뿌려준다.
 
-                Log.e("contentTypeId","msg: "+contentTypeId);
-                Log.e("areaCode","msg: "+areaCode);
-                Log.e("sigunguCode","msg: "+sigunguCode);
                 if(contentTypeId!=-1 && areaCode!=-1 && sigunguCode!=-1){
-                    Log.e("Let's try getting API","msg");
                     try{
-                        Log.e("hell","helll");
                         TravelAsyncTask travelAsyncTask= new TravelAsyncTask();
                         travelAsyncTask.execute();
                     } catch (Exception e) {
-                        Log.e("TryFail","msg: "+e.getMessage());
                     }
                 }
 
-                Log.e("Fail try getting API","msg");
 
             }
         });
@@ -166,12 +169,6 @@ public class TravelActivity extends AppCompatActivity {
 
     }
 
-    private void InitializeCity() {
-        CityList[0] = new ArrayList<String>(Arrays.asList("강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구",
-                "중구","중랑구"));
-        CityList[1] = new ArrayList<String>(Arrays.asList("강화구","계양구","미추홀구","남동구"));
-
-    }
 
     public class TravelAsyncTask extends AsyncTask<String,Void,String>{
 
@@ -282,9 +279,6 @@ public class TravelActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //TODO 리사이클러 어답터 연결
-            Log.e("onPostExecute","post"+s);
-            Log.e("onPostExecute","size: "+tourDataItems.size());
-            Log.e("onPostExecute","get(0): "+tourDataItems.get(0).getAddr1());
 
             TravelRecyclerAdapter adapter = new TravelRecyclerAdapter(tourDataItems,getApplicationContext());
             mRecycler.setAdapter(adapter);

@@ -5,8 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignInActivity">
-    <LinearLayout
+    <TextView
+        android:text="@string/logo"
+        android:id="@+id/sign_in_tv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        android:textColor="#0000FF"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/sign_in_linear"/>
+    <LinearLayout
+        android:id="@+id/sign_in_linear"
+        app:layout_constraintTop_toBottomOf="@id/sign_in_tv_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -14,21 +27,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
-            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <EditText
                 android:id="@+id/sign_in_edt_email"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:hint="@string/sign_in_edt_email"
+                android:singleLine="true"
                 android:layout_height="wrap_content"/>
             <EditText
                 android:id="@+id/sign_in_edt_pw"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:hint="@string/sign_in_edt_pwd"
+                android:singleLine="true"
+                android:inputType="textPassword"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
@@ -39,10 +52,14 @@
             <Button
                 android:id="@+id/sign_in_btn_login"
                 android:text="@string/sign_in_btn_log_in"
+                android:backgroundTint="@color/board_button_color"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <Button
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="@color/board_button_color"
                 android:id="@+id/sign_in_btn_sign_in"
                 android:text="@string/sign_in_btn_sign_in"
                 android:layout_weight="1"

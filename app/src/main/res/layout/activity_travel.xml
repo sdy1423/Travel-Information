@@ -10,6 +10,7 @@
         android:id="@+id/travel_ll_search"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:paddingLeft="10dp"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -17,25 +18,32 @@
         app:layout_constraintBottom_toTopOf="@+id/travel_ll_show">
         <TextView
             android:text="@string/travel_search"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
             android:id="@+id/travel_tv_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
+                android:gravity="center_vertical"
                 android:text="@string/travel_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.AppCompatSpinner
+                android:spinnerMode="dropdown"
                 android:id="@+id/travel_sp_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="150dp"
+                android:layout_height="50dp"/>
             <androidx.appcompat.widget.AppCompatSpinner
+                android:spinnerMode="dropdown"
                 android:id="@+id/travel_sp_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="150dp"
+                android:layout_height="50dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,12 +54,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.AppCompatSpinner
+                android:spinnerMode="dropdown"
                 android:id="@+id/travel_sp_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="150dp"
+                android:layout_height="50dp"/>
             <Button
                 android:id="@+id/travel_btn_search"
                 android:text="@string/travel_btn_search"
+                android:backgroundTint="@color/board_button_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

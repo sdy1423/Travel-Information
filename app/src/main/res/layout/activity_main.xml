@@ -12,6 +12,7 @@
         android:id="@+id/main_btn_board1"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:backgroundTint="@color/board_button_color"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/main_btn_board2"
@@ -23,6 +24,7 @@
         android:id="@+id/main_btn_board2"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:backgroundTint="@color/board_button_color"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/main_btn_board1"
         app:layout_constraintRight_toRightOf="parent"
@@ -30,6 +32,7 @@
 
     <Button
         android:text="경상도 게시판"
+        android:backgroundTint="@color/board_button_color"
         android:onClick="onClick"
         android:id="@+id/main_btn_board3"
         android:layout_width="100dp"
@@ -41,6 +44,7 @@
 
     <Button
         android:text="전라도 게시판"
+        android:backgroundTint="@color/board_button_color"
         android:onClick="onClick"
         android:id="@+id/main_btn_board4"
         android:layout_width="100dp"
@@ -53,6 +57,7 @@
 
     <Button
         android:text="충청도 게시판"
+        android:backgroundTint="@color/board_button_color"
         android:onClick="onClick"
         android:id="@+id/main_btn_board5"
         android:layout_width="100dp"
@@ -64,6 +69,7 @@
 
     <Button
         android:text="여행정보"
+        android:backgroundTint="@color/board_button_color"
         android:id="@+id/main_btn_travel"
         android:layout_width="100dp"
         android:layout_height="100dp"

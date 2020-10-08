@@ -29,4 +29,93 @@
         <item>쇼핑</item>
         <item>음식점</item>
     </string-array>
+    <string-array name="city1">
+        <item>강남구</item>
+        <item>강동구</item>
+        <item>강북구</item>
+    </string-array>
+    <string-array name="city2">
+        <item>강화군</item>
+        <item>계양구</item>
+        <item>미추홀구</item>
+    </string-array>
+    <string-array name="city3">
+        <item>대덕구</item>
+        <item>동구</item>
+        <item>서구</item>
+    </string-array>
+    <string-array name="city4">
+        <item>남구</item>
+        <item>달서구</item>
+        <item>달성군</item>
+    </string-array>
+    <string-array name="city5">
+        <item>광산구</item>
+        <item>남구</item>
+        <item>동구</item>
+    </string-array>
+    <string-array name="city6">
+        <item>강서구</item>
+        <item>금정구</item>
+        <item>기장군</item>
+    </string-array>
+    <string-array name="city7">
+        <item>중구</item>
+        <item>남구</item>
+        <item>동구</item>
+    </string-array>
+    <string-array name="city8">
+        <item>세종특별자치시</item>
+    </string-array>
+    <string-array name="city9">
+        <item>가평군</item>
+        <item>고양시</item>
+        <item>과천시</item>
+    </string-array>
+    <string-array name="city10">
+        <item>강릉시</item>
+        <item>고성군</item>
+        <item>동해시</item>
+    </string-array>
+    <string-array name="city11">
+        <item>강릉시</item>
+        <item>고성군</item>
+        <item>동해시</item>
+    </string-array>
+    <string-array name="city12">
+        <item>괴산군</item>
+        <item>단양군</item>
+        <item>보은군</item>
+    </string-array>
+    <string-array name="city13">
+        <item>공주시</item>
+        <item>금산군</item>
+        <item>논산시</item>
+    </string-array>
+    <string-array name="city14">
+        <item>경산시</item>
+        <item>경주시</item>
+        <item>고령군</item>
+    </string-array>
+    <string-array name="city15">
+        <item>거제시</item>
+        <item>거창군</item>
+        <item>고성군</item>
+    </string-array>
+    <string-array name="city16">
+        <item>고창군</item>
+        <item>군산시</item>
+        <item>김제시</item>
+    </string-array>
+    <string-array name="city17">
+        <item>강진군</item>
+        <item>고흥군</item>
+        <item>곡성군</item>
+    </string-array>
+    <string-array name="city18">
+        <item>남제주군</item>
+        <item>북제주군</item>
+        <item>서귀포시</item>
+    </string-array>
+
 </resources>

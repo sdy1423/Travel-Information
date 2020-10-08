@@ -101,9 +101,9 @@ public abstract class PostListFragment extends Fragment {
 
                 //현재 유저가 해당 포스트를 좋아요를 눌렀는지 여부에 따라 아이콘을 다르게 구성
                 if (model.stars.containsKey(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    viewHolder.starView.setImageResource(R.drawable.ic_star_black_24dp);
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_yellow_24dp);
                 } else {
-                    viewHolder.starView.setImageResource(R.drawable.ic_star_purple_24dp);
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_border_yellow_24dp);
                 }
 
                 //Post와 뷰홀더를 엮는다. 별 버튼에 클릭 리스너 달아준다.
@@ -160,13 +160,6 @@ public abstract class PostListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
-    }
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
